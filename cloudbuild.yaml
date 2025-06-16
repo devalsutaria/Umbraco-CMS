@@ -1,0 +1,27 @@
+timeout: "28800s"
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+
+  # Pick a larger machine type than the default.
+  # Available built‐in options: E2_SMALL, E2_MEDIUM (default), E2_HIGHCPU_8, E2_HIGHCPU_32
+  machineType: "E2_HIGHCPU_32"
+
+steps:
+  # STEP 2: SonarScanner Analysis Step
+  - name: 'sonarsource/sonar-scanner-cli'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        mkdir -p /tmp/.sonar
+        mkdir -p /tmp/.scannerwork
+        export SONAR_USER_HOME=/tmp/.sonar
+        sonar-scanner \
+          -Dsonar.projectKey=umbraco-cms \
+          -Dsonar.projectName=umbraco-cms \
+          -Dsonar.sources=. \
+          -Dsonar.host.url=https://sonar-demo-pt.iexperts.cloud \
+          -Dsonar.login=sqp_1eb836897edad0459e216136275ef8b6d825a9f0 \
+          -Dsonar.log.level=DEBUG \
+          -Dsonar.working.directory=/tmp/.scannerwork
